@@ -23,8 +23,8 @@ For an internet-accessible match, deploy this folder to a Node hosting service t
 | Shift | Sprint |
 | Ctrl | Crouch |
 | Space | Jump |
-| Left mouse button (hold) | Aim / zoom |
-| Right mouse button (hold) | Fire primary; click to swing knife |
+| Left mouse button (hold) | Fire primary; click to swing knife |
+| Right mouse button (hold) | Aim / zoom |
 | R | Reload primary |
 | 1 | Equip selected gun |
 | 2 | Equip knife |
@@ -32,7 +32,7 @@ For an internet-accessible match, deploy this folder to a Node hosting service t
 | Tab (hold) | Expand leaderboard |
 | Esc | Release mouse pointer |
 
-Click the arena to capture the mouse after deploying. This prototype intentionally preserves the requested left-mouse-to-aim / right-mouse-to-fire layout.
+Click the arena to capture the mouse after deploying. The updated controls are left-mouse-to-fire / right-mouse-to-aim.
 
 ## Weapon tuning
 
@@ -57,3 +57,11 @@ Every gun has its own rate of fire, reload time, range and spread. Aiming tighte
 ## Prototype limits
 
 This is an MVP, not a production-ready competitive shooter. It does not yet have accounts, matchmaking across separate rooms, ranked persistence, advanced animation, anti-cheat, server reconciliation/prediction, accessibility remapping, or dedicated hosting configuration. Physics and hitboxes are deliberately lightweight; the bots are simple target-seeking opponents. Before a public launch, add rate limits, stronger validation, secure deployment, automated tests, and more play-testing for weapon balance and mobile/performance support.
+
+
+## Latest visual update
+
+- Enlarged chess pieces into tree-scale cover, with matching server movement and bullet-blocking collision.
+- Swapped mouse controls: left-click fires/attacks and right-click aims.
+- Reworked Web Audio gunshots so rifle, shotgun, and sniper have different tonal signatures.
+- Strengthened the health bar and added a reload-progress HUD plus first-person weapon/magazine reload motion.

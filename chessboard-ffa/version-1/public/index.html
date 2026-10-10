@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1018">
+  <title>CHECKMATE // Free-for-All</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div id="game-shell">
+    <div id="game-canvas"></div>
+    <div class="topline">
+      <div class="brand"><span class="brand-mark">♜</span><span>CHECKMATE <i>//</i> FFA</span></div>
+      <div class="match-pill"><span class="live-dot"></span><span id="round-label">ROUND 01</span><b id="timer-label">10:00</b></div>
+      <div class="top-actions"><span id="player-count">0 / 10 PLAYERS</span><button id="loadout-button" class="ghost-button" type="button">GUN LOADOUT <kbd>G</kbd></button></div>
+    </div>
+
+    <div id="hud" class="hidden">
+      <div class="hud-left">
+        <div class="player-card glass">
+          <div class="avatar-chip" id="avatar-chip">P1</div>
+          <div class="player-identity"><div id="player-name">PLAYER</div><small>FREE-FOR-ALL</small></div>
+          <div class="rank-chip" id="rank-chip">ROOKIE</div>
+        </div>
+        <div class="health-card glass">
+          <div class="health-label"><span>VITALS</span><strong><span id="health-number">100</span><small> / 100</small></strong></div>
+          <div class="meter"><span id="health-fill"></span></div>
+          <div class="health-meta"><span id="status-label">COMBAT READY</span><span id="xp-label">0 XP</span></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-box glass"><span>ELIMS</span><b id="kills-label">0</b></div>
+          <div class="stat-box glass"><span>DEATHS</span><b id="deaths-label">0</b></div>
+          <div class="stat-box glass"><span>STREAK</span><b id="streak-label">0×</b></div>
+        </div>
+      </div>
+
+      <div id="killfeed" class="killfeed"></div>
+      <div id="leaderboard" class="leaderboard glass"><div class="leaderboard-head"><span>TOP OPERATORS</span><kbd>TAB</kbd></div><div id="leaderboard-rows"></div></div>
+      <div id="minimap-panel" class="minimap-panel glass"><div class="mini-head"><span>TACTICAL RADAR</span><span>8×8</span></div><canvas id="minimap" width="150" height="150"></canvas></div>
+      <div class="crosshair" id="crosshair"><i></i><i></i><i></i><i></i><b></b></div>
+      <div id="hitmarker" class="hitmarker"><i></i><i></i><i></i><i></i></div>
+      <div id="center-toast" class="center-toast"></div>
+      <div id="damage-flash"></div>
+      <div class="bottom-hud">
+        <div class="controls-hint"><kbd>W A S D</kbd> MOVE <span>·</span> <kbd>SHIFT</kbd> SPRINT <span>·</span> <kbd>CTRL</kbd> CROUCH <span>·</span> <kbd>SPACE</kbd> JUMP</div>
+        <div class="weapon-card glass">
+          <div class="weapon-symbol" id="weapon-symbol">AR</div>
+          <div class="weapon-details"><div id="weapon-name">ASSAULT RIFLE</div><small id="weapon-state">FULL AUTO · 30 ROUND MAG</small></div>
+          <div class="ammo"><b id="ammo-current">30</b><span>/</span><small id="ammo-reserve">120</small></div>
+          <div class="weapon-keys"><span><kbd>1</kbd> GUN</span><span><kbd>2</kbd> KNIFE</span><span><kbd>R</kbd> RELOAD</span></div>
+        </div>
+      </div>
+      <div id="knife-banner" class="knife-banner hidden"><span>KNIFE EQUIPPED</span><small>CLICK TO STRIKE · CLOSE RANGE</small></div>
+      <div id="knife-cooldown" class="knife-cooldown hidden"></div>
+      <div id="respawn-overlay" class="respawn-overlay hidden"><div class="respawn-eyebrow">ELIMINATED</div><div id="death-title">OUTPLAYED</div><div id="respawn-countdown">RESPAWNING IN 3</div></div>
+    </div>
+
+    <div id="start-overlay" class="overlay">
+      <div class="modal start-modal">
+        <div class="modal-kicker"><span class="live-dot"></span> MULTIPLAYER ARENA · 8–10 OPERATORS</div>
+        <h1>CHECK<span>MATE</span></h1>
+        <p class="modal-subtitle">A free-for-all fight across a shattered chessboard. Pick your weapon, read the angles, and take the board.</p>
+        <label class="field-label" for="player-name-input">OPERATOR CALLSIGN</label>
+        <input id="player-name-input" maxlength="16" autocomplete="nickname" value="RookRunner" placeholder="Enter callsign">
+        <div class="section-heading"><span>CHOOSE YOUR PRIMARY</span><small>ONE GUN + ONE KNIFE</small></div>
+        <div id="weapon-options" class="weapon-options"></div>
+        <button id="join-button" class="primary-button" type="button">DEPLOY TO ARENA <span>↗</span></button>
+        <div id="join-error" class="error-text"></div>
+        <div class="modal-foot"><span>WASD TO MOVE</span><span>RMB FIRE · LMB AIM</span><span>ESC RELEASE MOUSE</span></div>
+      </div>
+    </div>
+
+    <div id="loadout-overlay" class="overlay hidden">
+      <div class="modal loadout-modal">
+        <button id="close-loadout" class="close-button" type="button" aria-label="Close loadout">×</button>
+        <div class="modal-kicker">FIELD ARMORY · HOTKEY G</div>
+        <h2>SELECT YOUR <span>PRIMARY</span></h2>
+        <p class="modal-subtitle">Switching replaces your current primary and replenishes its magazine. Your knife is always available.</p>
+        <div id="loadout-options" class="weapon-options loadout-options"></div>
+        <div class="modal-foot"><span><kbd>1</kbd> PRIMARY</span><span><kbd>2</kbd> KNIFE</span><span>CHOOSE A WEAPON TO EQUIP</span></div>
+      </div>
+    </div>
+
+    <div id="intro-hint" class="intro-hint hidden">CLICK THE ARENA TO CAPTURE MOUSE <span>·</span> ESC TO RELEASE</div>
+    <div id="notification" class="notification hidden"></div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="/client.js"></script>
+</body>
+</html>
